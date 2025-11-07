@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +8,6 @@ import max from "../images/snap.png"; // Your logo image
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const navLinks = [
@@ -54,12 +54,18 @@ const Navbar = () => {
 
           {/* 3. Desktop Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="px-5 py-2 text-purple-600 border border-purple-600 rounded-lg text-base font-medium hover:bg-purple-50 transition duration-150 ease-in-out">
+            <Link
+              href="/login"
+              className="px-5 py-2 text-purple-600 border border-purple-600 rounded-lg text-base font-medium hover:bg-purple-50 transition duration-150 ease-in-out"
+            >
               Sign In
-            </button>
-            <button className="px-5 py-2 text-white bg-purple-600 rounded-lg text-base font-medium hover:bg-purple-700 transition duration-150 ease-in-out shadow-lg">
+            </Link>
+            <Link
+              href="/signup"
+              className="px-5 py-2 text-white bg-purple-600 rounded-lg text-base font-medium hover:bg-purple-700 transition duration-150 ease-in-out shadow-lg"
+            >
               Get Started
-            </button>
+            </Link>
           </div>
 
           {/* 4. Mobile Menu Button */}
@@ -93,21 +99,30 @@ const Navbar = () => {
               key={link.name}
               href={link.href}
               className="text-gray-600 hover:bg-purple-50 hover:text-purple-600 block px-3 py-2 rounded-md text-base font-medium transition duration-150 ease-in-out"
-              onClick={toggleMenu} // close menu when a link is clicked
+              onClick={toggleMenu}
             >
               {link.name}
             </Link>
           ))}
+
           <hr className="my-2 border-gray-100" />
 
-          {/* Mobile Buttons */}
+          {/* ✅ Mobile Buttons (Clickable Links) */}
           <div className="pt-2 pb-3 space-y-4 px-3">
-            <button className="w-full px-5 py-2 text-purple-600 border border-purple-600 rounded-lg text-base font-medium hover:bg-purple-50 transition duration-150 ease-in-out">
+            <Link
+              href="/login"
+              onClick={toggleMenu}
+              className="block text-center w-full px-5 py-2 text-purple-600 border border-purple-600 rounded-lg text-base font-medium hover:bg-purple-50 transition duration-150 ease-in-out"
+            >
               Sign In
-            </button>
-            <button className="w-full px-5 py-2 text-white bg-purple-600 rounded-lg text-base font-medium hover:bg-purple-700 transition duration-150 ease-in-out shadow-lg">
+            </Link>
+            <Link
+              href="/signup"
+              onClick={toggleMenu}
+              className="block text-center w-full px-5 py-2 text-white bg-purple-600 rounded-lg text-base font-medium hover:bg-purple-700 transition duration-150 ease-in-out shadow-lg"
+            >
               Get Started
-            </button>
+            </Link>
           </div>
         </div>
       </div>
