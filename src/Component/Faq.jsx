@@ -5,6 +5,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import bgImage from "../images/background.png";
 import manImage from "../images/man.png";
 
+// Animation variants
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
 const faqData = [
   {
     question: "Does FormServer offer surveys?",
@@ -32,15 +48,14 @@ const faqData = [
   },
 ];
 
-const FaqItem = ({ question, answer, isOpen, toggleFaq }) => {
+const FaqItem = ({ question, answer, isOpen, toggleFaq, variants }) => {
   return (
-    
-    <div className="border-b border-gray-700 last:border-b-0">
+    <motion.div variants={variants} className="border-b border-gray-700 last:border-b-0">
       <button
-        className="w-full py-6 flex justify-between items-center text-left"
+        className="flex items-center justify-between w-full py-6 text-left"
         onClick={toggleFaq}
       >
-        <span className="text-lg text-black font-medium hover:text-purple-400 transition-colors">
+        <span className="text-lg font-medium text-black transition-colors hover:text-purple-400">
           {question}
         </span>
         <motion.span
@@ -62,11 +77,11 @@ const FaqItem = ({ question, answer, isOpen, toggleFaq }) => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <p className="text-gray-400 text-base pb-4">{answer}</p>
+            <p className="pb-4 text-base text-black">{answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 
@@ -78,92 +93,108 @@ const Faq = () => {
   };
 
   return (
-     <>
-    <section className=" bg-gradient-to-b from-[#fff8fd] via-[#fdf8ff] to-[#f7f3ff] transition-colors duration-500  py-20 md:py-32"> {/* same as Work.jsx */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-black mb-4 opacity-90">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-black max-w-2xl mx-auto">
-            Find answers to your questions right here, and don’t hesitate to{" "}
-            <a
-              href="#"
-              className="text-purple-400 hover:text-purple-300 transition-colors underline"
-            >
-              contact us
-            </a>{" "}
-            if you couldn’t find what you’re looking for.
-          </p>
+    <>
+      {/* Main FAQ section with staggered entrance */}
+      <motion.section
+        className="bg-gradient-to-b from-[#fff8fd] via-[#fdf8ff] to-[#f7f3ff] transition-colors duration-500 py-20 md:py-32"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={staggerContainer}
+      >
+        <div className="max-w-4xl px-4 mx-auto sm:px-6 lg:px-8">
+          {/* Header with fade-up */}
+          <motion.div variants={fadeUp} className="mb-16 text-center">
+            <h2 className="mb-4 text-4xl font-extrabold text-black md:text-5xl opacity-90">
+              Frequently Asked Questions
+            </h2>
+            <p className="max-w-2xl mx-auto text-black">
+              Find answers to your questions right here, and don’t hesitate to{" "}
+              <a
+                href="#"
+                className="text-purple-400 underline transition-colors hover:text-purple-300"
+              >
+                contact us
+              </a>{" "}
+              if you couldn’t find what you’re looking for.
+            </p>
+          </motion.div>
+
+          {/* FAQ list with staggered items */}
+          <motion.div variants={staggerContainer} className="divide-y divide-gray-700">
+            {faqData.map((item, index) => (
+              <FaqItem
+                key={index}
+                question={item.question}
+                answer={item.answer}
+                isOpen={openIndex === index}
+                toggleFaq={() => toggleFaq(index)}
+                variants={fadeUp}
+              />
+            ))}
+          </motion.div>
         </div>
 
-        <div className="divide-y divide-gray-700">
-          {faqData.map((item, index) => (
-            <FaqItem
-              key={index}
-              question={item.question}
-              answer={item.answer}
-              isOpen={openIndex === index}
-              toggleFaq={() => toggleFaq(index)}
-            />
-          ))}
-        </div>
-      </div>
+        {/* Refer and Earn section with its own entrance animation */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+        >
+          <section className="relative w-full rounded-[24px] overflow-hidden bg-[#FCEFFF] py-16 px-6 md:px-16 mt-16">
+            {/* Background image placeholder */}
+            <div className="absolute inset-0 w-full h-full">
+              <Image
+                src={bgImage}
+                alt="Background pattern"
+                fill
+                className="object-cover object-center opacity-90"
+              />
+            </div>
 
-      <section className="relative w-full rounded-[24px] overflow-hidden bg-[#FCEFFF] py-16 px-6 md:px-16 mt-16">
-      {/* Background image placeholder */}
-      <div className="absolute inset-0 w-full h-full">
-        {/* Uncomment when background is ready */}
-        <Image
-          src={bgImage}
-          alt="Background pattern"
-          fill
-          className="object-cover object-center opacity-90"
-        />
-      </div>
+            {/* Content */}
+            <div className="relative z-10 flex flex-col items-center justify-between mx-auto md:flex-row max-w-7xl">
+              {/* Text Section */}
+              <div className="max-w-xl text-center md:text-left">
+                <h2 className="mb-4 text-4xl font-bold text-black md:text-5xl">
+                  <span className="text-black">Refer and Earn</span>
+                </h2>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto">
-        {/* Text Section */}
-        <div className="max-w-xl text-center md:text-left">
-          <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
-            <span className="text-black">Refer and Earn</span>
-          </h2>
+                <p className="mb-3 text-2xl font-medium text-purple-700">
+                  Invite your friends and get rewarded!
+                </p>
 
-          <p className="text-2xl text-purple-700 font-medium mb-3">
-            Invite your friends and get rewarded!
-          </p>
+                <p className="mb-8 text-lg text-gray-700">
+                  Enjoy your rewards with your friends through our rewards point
+                  system
+                </p>
 
-          <p className="text-gray-700 mb-8 text-lg">
-            Enjoy your rewards with your friends through our rewards point
-            system
-          </p>
+                <button className="px-8 py-3 font-medium text-black transition bg-white border border-gray-300 rounded-xl hover:bg-gray-100">
+                  Refer Now!
+                </button>
 
-          <button className="bg-white border border-gray-300 px-8 py-3 rounded-xl text-black font-medium hover:bg-gray-100 transition">
-            Refer Now!
-          </button>
+                <p className="mt-4 text-sm text-purple-500">
+                  Terms and condition apply
+                </p>
+              </div>
 
-          <p className="text-sm text-purple-500 mt-4">
-            Terms and condition apply
-          </p>
-        </div>
-
-        {/* Right Side Image Placeholder */}
-        <div className="relative w-[300px] md:w-[400px] lg:w-[450px] mt-12 md:mt-0">
-          {/* Uncomment when man image is ready */}
-          <Image
-            src={manImage}
-            alt="Man using phone"
-            width={500}
-            height={500}
-            className="object-contain"
-          />
-        </div>
-      </div>
-    </section>
-    </section>
-     
-   </>
+              {/* Right Side Image Placeholder */}
+              <div className="relative w-[300px] md:w-[400px] lg:w-[450px] mt-12 md:mt-0">
+                <Image
+                  src={manImage}
+                  alt="Man using phone"
+                  width={500}
+                  height={500}
+                  className="object-contain"
+                />
+              </div>
+            </div>
+          </section>
+        </motion.div>
+      </motion.section>
+    </>
   );
 };
 

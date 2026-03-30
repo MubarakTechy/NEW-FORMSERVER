@@ -34,11 +34,11 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-sm p-4 flex flex-col justify-between">
+      <aside className="flex flex-col justify-between w-64 gap-10 p-4 bg-white shadow-sm">
         <div>
 
-          <h1 className="text-xl font-semibold mb-6">Form Server</h1>
-          <nav className="space-y-2">
+          <h1 className="mb-6 text-xl font-semibold">Form Server</h1>
+          <nav className="space-y-2 font-bold ">
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -61,7 +61,7 @@ export default function DashboardLayout({ children }) {
         </div>
 
         {/* Bottom section */}
-        <div className="space-y-2 gap-10 border-t pt-4">
+        <div className="gap-20 pt-4 space-y-2 font-bold border-t">
           {bottomItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -69,7 +69,7 @@ export default function DashboardLayout({ children }) {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all ${
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-bold transition-all ${
                   isActive
                     ? "bg-purple-100 text-purple-600 font-medium"
                     : "text-gray-600 hover:bg-gray-100"

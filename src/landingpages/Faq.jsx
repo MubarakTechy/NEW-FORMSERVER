@@ -29,21 +29,40 @@ const faqData = [
   },
 ];
 
-const FaqItem = ({ question, answer, isOpen, toggleFaq }) => {
+// Animation variants
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const FaqItem = ({ question, answer, isOpen, toggleFaq, variants }) => {
   return (
-    <div className="border-b border-gray-700 last:border-b-0">
+    <motion.div
+      variants={variants}                    // ← entrance animation from parent stagger
+      className="border-b border-gray-700 last:border-b-0"
+    >
       <button
-        className="w-full py-6 flex justify-between items-center text-left"
+        className="flex items-center justify-between w-full py-6 text-left"
         onClick={toggleFaq}
       >
-        <span className="text-lg text-black font-medium hover:text-purple-400 transition-colors">
+        <span className="text-lg font-medium text-black transition-colors hover:text-purple-400">
           {question}
         </span>
         <motion.span
           initial={{ rotate: 0 }}
           animate={{ rotate: isOpen ? 0 : 180 }}
           transition={{ duration: 0.3 }}
-          className="text-xl text-gray-400"
+          className="text-xl text-black"
         >
           {isOpen ? "—" : "+"}
         </motion.span>
@@ -58,11 +77,11 @@ const FaqItem = ({ question, answer, isOpen, toggleFaq }) => {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <p className="text-gray-400 text-base pb-4">{answer}</p>
+            <p className="pb-4 text-base text-gray-400">{answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 
@@ -74,25 +93,36 @@ const Faq = () => {
   };
 
   return (
-    <section className=" bg-gradient-to-b from-[#fff8fd] via-[#fdf8ff] to-[#f7f3ff] transition-colors duration-500  py-20 md:py-32"> {/* same as Work.jsx */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-black mb-4 opacity-90">
+    <motion.section
+      className="bg-gradient-to-b from-[#fff8fd] via-[#fdf8ff] to-[#f7f3ff] transition-colors duration-500 py-20 md:py-32"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+    >
+      <div className="max-w-4xl px-4 mx-auto sm:px-6 lg:px-8">
+        {/* Header with staggered entrance */}
+        <motion.div variants={fadeUp} className="mb-16 text-center">
+          <h2 className="mb-4 text-4xl font-extrabold text-black md:text-5xl opacity-90">
             Frequently Asked Questions
           </h2>
-          <p className="text-black max-w-2xl mx-auto">
+          <p className="max-w-2xl mx-auto text-black">
             Find answers to your questions right here, and don’t hesitate to{" "}
             <a
               href="#"
-              className="text-purple-400 hover:text-purple-300 transition-colors underline"
+              className="text-purple-400 underline transition-colors hover:text-purple-300"
             >
               contact us
             </a>{" "}
             if you couldn’t find what you’re looking for.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="divide-y divide-gray-700">
+        {/* FAQ list with staggered items */}
+        <motion.div
+          variants={staggerContainer}
+          className="divide-y divide-gray-700"
+        >
           {faqData.map((item, index) => (
             <FaqItem
               key={index}
@@ -100,11 +130,12 @@ const Faq = () => {
               answer={item.answer}
               isOpen={openIndex === index}
               toggleFaq={() => toggleFaq(index)}
+              variants={fadeUp}               // ← each item uses the fadeUp variant
             />
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

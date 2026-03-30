@@ -55,13 +55,13 @@ const Navbar = () => {
           {/* 3. Desktop Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Link
-              href="/login"
+              href="/signin"
               className="px-5 py-2 text-purple-600 border border-purple-600 rounded-lg text-base font-medium hover:bg-purple-50 transition duration-150 ease-in-out"
             >
               Sign In
             </Link>
             <Link
-              href="/signup"
+              href="/register"
               className="px-5 py-2 text-white bg-purple-600 rounded-lg text-base font-medium hover:bg-purple-700 transition duration-150 ease-in-out shadow-lg"
             >
               Get Started

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";                // ← added import
 
 // Import your step images
 import step1 from "../images/step1.png";
@@ -27,29 +28,58 @@ const Work = () => {
     },
     {
       title: "Step 4: View Submissions in Your Dashboard",
-      description:
-        "All form and survey submissions appear in your dashboard.",
+      description: "All form and survey submissions appear in your dashboard.",
       image: step4,
     },
   ];
 
-  return (
-    <section className="py-20 bg-gradient-to-b from-[#fff8fd] via-[#fdf8ff] to-[#f7f3ff] transition-colors duration-500">
-      <div className="max-w-7xl mx-auto px-6 text-center">
-        {/* Section Header */}
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
-          How It Works
-        </h2>
-        <p className="text-gray-600 text-lg mb-16">
-          Just three steps: build, connect, and view submissions in your
-          dashboard.
-        </p>
+  // Animation variants
+  const fadeUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
 
-        {/* Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-12">
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  return (
+    <motion.section
+      className="py-20 bg-gradient-to-b from-[#fff8fd] via-[#fdf8ff] to-[#f7f3ff] transition-colors duration-500"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={staggerContainer}
+    >
+      <div className="px-6 mx-auto text-center max-w-7xl">
+        {/* Section Header with staggered children */}
+        <motion.div variants={fadeUp}>
+          <h2 className="mb-4 text-4xl font-extrabold text-gray-900 sm:text-5xl">
+            How It Works
+          </h2>
+        </motion.div>
+        <motion.div variants={fadeUp}>
+          <p className="mb-16 text-lg text-gray-600">
+            Just three steps: build, connect, and view submissions in your
+            dashboard.
+          </p>
+        </motion.div>
+
+        {/* Steps Grid with staggered cards */}
+        <motion.div
+          className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:gap-12"
+          variants={staggerContainer}
+        >
           {steps.map((step, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={fadeUp}
               className="bg-white/90 backdrop-blur-sm border border-[#f2e9fb] rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-8 hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300"
             >
               {/* Image Section */}
@@ -57,20 +87,20 @@ const Work = () => {
                 <Image
                   src={step.image}
                   alt={step.title}
-                  className="rounded-xl w-full h-48 object-contain"
+                  className="object-contain w-full h-48 rounded-xl"
                 />
               </div>
 
               {/* Text Section */}
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="mb-2 text-lg font-semibold text-gray-900">
                 {step.title}
               </h3>
-              <p className="text-gray-600 text-sm">{step.description}</p>
-            </div>
+              <p className="text-sm text-gray-600">{step.description}</p>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

@@ -3,16 +3,19 @@ import React from "react";
 import { motion } from "framer-motion";
 
 // --- Icon Components ---
-const ShieldIcon = (props) => (
+// Shield with check – better represents spam protection
+const ShieldCheckIcon = (props) => (
   <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"
-      d="M9 12l2 2 4-4m5.617-4.27a8.98 8.98 0 00-4.27-4.27 9.001 9.001 0 00-6.69 0 9.001 9.001 0 00-4.27 4.27A8.98 8.98 0 003 12c0 2.404.974 4.673 2.723 6.368L12 21l6.277-2.632C20.026 16.673 21 14.404 21 12c0-2.404-.974-4.673-2.383-6.368z"
+      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
     />
   </svg>
 );
+
+// Envelope – email notifications (unchanged)
 const MailIcon = (props) => (
   <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
@@ -23,26 +26,32 @@ const MailIcon = (props) => (
     />
   </svg>
 );
-const RefreshIcon = (props) => (
+
+// Cloud with check – auto‑save submissions (like saving to cloud)
+const CloudCheckIcon = (props) => (
   <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"
-      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m2.28 4h10.436l-2-2m2 2l2 2m-2-2a8.001 8.001 0 01-14.8-2.6l-2.2-2.2"
+      d="M8 16l2 2 4-4m6-4a5 5 0 00-4.546-2.916A5.986 5.986 0 0010 4a6 6 0 00-6 6c0 2.501 1.5 4.5 3 5.5M19 13v5a2 2 0 01-2 2H7a2 2 0 01-2-2v-5"
     />
   </svg>
 );
-const UsersIcon = (props) => (
+
+// Users with plus – team collaboration
+const UsersPlusIcon = (props) => (
   <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"
-      d="M17 20h-4a2 2 0 01-2-2v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2a2 2 0 01-2 2h-4m14-12a4 4 0 11-8 0 4 4 0 018 0zm-8 0a4 4 0 10-8 0 4 4 0 008 0z"
+      d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
     />
   </svg>
 );
+
+// Search – insightful surveys (unchanged)
 const SearchIcon = (props) => (
   <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
@@ -53,6 +62,8 @@ const SearchIcon = (props) => (
     />
   </svg>
 );
+
+// Link – connect tools (unchanged)
 const LinkIcon = (props) => (
   <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path
@@ -89,12 +100,12 @@ const cardVariants = {
 const FeatureCard = ({ icon, title, description }) => (
   <motion.div
     variants={cardVariants}
-    className="p-8 bg-gray-900 border border-gray-700/50 rounded-2xl shadow-lg flex flex-col items-center text-center hover:shadow-purple-500/10 hover:-translate-y-1 transition-all duration-300"
+    className="flex flex-col items-center p-8 text-center transition-all duration-300 bg-gray-900 border shadow-lg border-gray-700/50 rounded-2xl hover:shadow-purple-500/10 hover:-translate-y-1"
   >
-    <div className="mb-4 flex justify-center items-center">
+    <div className="flex items-center justify-center mb-4">
       {React.cloneElement(icon, { className: "w-12 h-12 text-purple-400" })}
     </div>
-    <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
+    <h3 className="mb-2 text-xl font-semibold text-white">{title}</h3>
     <p className="text-gray-400">{description}</p>
   </motion.div>
 );
@@ -103,7 +114,7 @@ const FeatureCard = ({ icon, title, description }) => (
 const Feature = () => {
   const featuresData = [
     {
-      icon: <ShieldIcon />,
+      icon: <ShieldCheckIcon />,          // ← updated
       title: "Spam Filtering",
       description:
         "We validate your data server-side and use machine learning to protect you from spam.",
@@ -115,12 +126,12 @@ const Feature = () => {
         "You receive instant email notifications and automated responses.",
     },
     {
-      icon: <RefreshIcon />,
+      icon: <CloudCheckIcon />,           // ← updated
       title: "Auto-Save Submissions",
       description: "All submissions are safely stored in your dashboard.",
     },
     {
-      icon: <UsersIcon />,
+      icon: <UsersPlusIcon />,            // ← updated
       title: "Work With Your Team",
       description:
         "Easily invite teammates to collaborate and manage form data.",
@@ -140,14 +151,14 @@ const Feature = () => {
   ];
 
   return (
-    <section className="bg-black py-20 md:py-32">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-black md:py-32">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white">
+        <div className="mb-16 text-center">
+          <h2 className="text-4xl font-extrabold text-white md:text-5xl">
             Features
           </h2>
-          <p className="mt-4 text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="max-w-3xl mx-auto mt-4 text-xl text-gray-400">
             Build, connect, and manage forms & surveys without backend hassle.
           </p>
         </div>
@@ -158,7 +169,7 @@ const Feature = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
           {featuresData.map((feature, index) => (
             <FeatureCard
